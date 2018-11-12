@@ -1,6 +1,6 @@
 class App {
   createGame() {
-    document.getElementById('container').addEventListener('mousedown', (event)=>{
+    document.getElementById('game-container').addEventListener('mousedown', (event)=>{
       let newGame = new Game({})
       if (event.target.id === "start"){
         newGame.createDisplay()

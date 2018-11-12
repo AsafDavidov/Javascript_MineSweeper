@@ -6,7 +6,7 @@ class Game{
     this.bombs = [0,1,2,3,4,5,6,7,8,13]
   }
   createDisplay(){
-    const container = document.getElementById('container')
+    const container = document.getElementById('game-container')
     container.innerHTML = "<h1>Game Here</h1>"
     let fullHTML = "<table>"
     for (let i = 0; i < 10; i++) {
@@ -18,9 +18,10 @@ class Game{
     }
     container.innerHTML+=fullHTML
   }
+
   click(clickedButton){
-    debugger
-    if (event.which ===1){
+    //debugger
+    if (event.which ===1 &&clickedButton.innerText === ""){
       let r = parseInt(clickedButton.dataset.row)*10;
       let c = parseInt(clickedButton.dataset.column);
       let adjacentButtons=[];
@@ -75,8 +76,13 @@ class Game{
       }
     }
     else if(event.which === 3){
-      console.log("made");
-      clickedButton.innerText = "🚩"
+      if (clickedButton.innerText === ""){
+        clickedButton.innerText = "🚩"
+      } else if(clickedButton.innerText === "🚩"){
+        clickedButton.innerText = "?"
+      } else if(clickedButton.innerText === "?"){
+        clickedButton.innerText = ""
+      }
     }
   }
   won(){
@@ -85,6 +91,7 @@ class Game{
   lost(){
     container.innerHTML = "<h1>Game OVER</h1>"
     container.innerHTML += `<button id = "start" name="button">Play new Game!</button>`
+
   }
 }
 Game.all = [];
