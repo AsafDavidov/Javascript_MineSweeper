@@ -1,15 +1,18 @@
 class Game{
   constructor(data){
     this.id = data.id;
-    this.timeTaken = data.timeTaken;
+    this.timeTaken = 0;
     this.winner = data.winner;
-    this.bombs = [0,1,2,3,4,5,6,7,8,13]
+    this.bombs = [0,1,2,3,4,5,6,7,8,13];
+    this.playing;
     //this.rows
     //this.columns for dynamic code
   }
   createDisplay(){
+
     const container = document.getElementById('game-container')
     container.innerHTML = "<h1>Game Here</h1>"
+    this.createTimer()
     let fullHTML = '<div id="button-grid"><table>'
     for (let i = 0; i < 10; i++) {
       fullHTML+= "<tr>"
@@ -20,11 +23,28 @@ class Game{
     }
     fullHTML += "</table></div>"
     container.innerHTML+=fullHTML
-  }
 
+  }
+  createTimer(){
+    const container = document.getElementById('game-container')
+    container.innerHTML += `<div><h1 data-id = "1" id="clock">${this.timeTaken}</h1></div>`
+    //debugger
+    //const timer = document.getElementById('clock');
+    this.playing = setInterval(()=>{
+      const timer1 = document.getElementById('clock');
+      //console.log(timer,timer1);
+    //    console.log(this);
+        this.timeTaken++
+        timer1.innerText = this.timeTaken
+      //  console.log(this.timeTaken)
+      //debugger
+      //console.log(timer.innerText);
+    },1000)
+  }
   click(clickedButton){
 
-    if (event.which ===1 && clickedButton.innerText === ""){
+    if (event.which === 1 && clickedButton.innerText === ""){
+      // console.log(this);
       let r = parseInt(clickedButton.dataset.row)*10;
       let c = parseInt(clickedButton.dataset.column);
       let adjacentButtons=[];
@@ -66,10 +86,12 @@ class Game{
         }
       }
       let countAdjacent = 0;
+      //console.log(this);
       if(this.bombs.includes(r+c)){
           this.winner = false
-          //this.timeTaken = whatever the time is
+          window.clearInterval(this.playing)
           this.lost()
+
       }else{
         adjacentButtons.forEach((num)=>{
           if(this.bombs.includes(num)){
@@ -82,6 +104,7 @@ class Game{
         if (totalClicked === (document.querySelectorAll(".play-area").length - this.bombs.length)){
           this.winner = true;
           //this.timeTaken = whatever the time is
+          window.clearInterval(this.playing)
           this.won()
         }
       }
@@ -97,9 +120,10 @@ class Game{
     }
   }
   won(){
-
+    //Should display message along with emoji and left board
   }
   lost(){
+    //should disable all buttons and display all bombs
     const container = document.getElementById('game-container')
     container.innerHTML = "<h1>Game OVER</h1>"
     container.innerHTML += `<button id = "start" name="button">Play new Game!</button> <button id = "stats" name="button">Your Stats</button>`
