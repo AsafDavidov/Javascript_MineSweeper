@@ -4,11 +4,13 @@ class Game{
     this.timeTaken = data.timeTaken;
     this.winner = data.winner;
     this.bombs = [0,1,2,3,4,5,6,7,8,13]
+    //this.rows
+    //this.columns for dynamic code
   }
   createDisplay(){
     const container = document.getElementById('game-container')
     container.innerHTML = "<h1>Game Here</h1>"
-    let fullHTML = "<table>"
+    let fullHTML = '<div id="button-grid"><table>'
     for (let i = 0; i < 10; i++) {
       fullHTML+= "<tr>"
       for (let j = 0; j < 10; j++) {
@@ -16,12 +18,13 @@ class Game{
       }
       fullHTML +="</tr>"
     }
+    fullHTML += "</table></div>"
     container.innerHTML+=fullHTML
   }
 
   click(clickedButton){
-    //debugger
-    if (event.which ===1 &&clickedButton.innerText === ""){
+
+    if (event.which ===1 && clickedButton.innerText === ""){
       let r = parseInt(clickedButton.dataset.row)*10;
       let c = parseInt(clickedButton.dataset.column);
       let adjacentButtons=[];
@@ -64,6 +67,8 @@ class Game{
       }
       let countAdjacent = 0;
       if(this.bombs.includes(r+c)){
+          this.winner = false
+          //this.timeTaken = whatever the time is
           this.lost()
       }else{
         adjacentButtons.forEach((num)=>{
@@ -73,6 +78,12 @@ class Game{
         })
         clickedButton.innerText = countAdjacent
         clickedButton.value = true;
+        let totalClicked = Array.from(document.querySelectorAll(".play-area")).filter((elem)=>elem.value=="true").length
+        if (totalClicked === (document.querySelectorAll(".play-area").length - this.bombs.length)){
+          this.winner = true;
+          //this.timeTaken = whatever the time is
+          this.won()
+        }
       }
     }
     else if(event.which === 3){
@@ -89,9 +100,9 @@ class Game{
 
   }
   lost(){
+    const container = document.getElementById('game-container')
     container.innerHTML = "<h1>Game OVER</h1>"
-    container.innerHTML += `<button id = "start" name="button">Play new Game!</button>`
-
+    container.innerHTML += `<button id = "start" name="button">Play new Game!</button> <button id = "stats" name="button">Your Stats</button>`
   }
 }
 Game.all = [];
