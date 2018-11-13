@@ -9,9 +9,8 @@ class Game{
     //this.columns for dynamic code
   }
   createDisplay(){
-
     const container = document.getElementById('game-container')
-    container.innerHTML = "<h1>Game Here</h1>"
+    container.innerHTML = '<h1 id = "intro">Start!</h1>'
     this.createTimer()
     let fullHTML = '<div id="button-grid"><table>'
     for (let i = 0; i < 10; i++) {
@@ -91,7 +90,6 @@ class Game{
           this.winner = false
           window.clearInterval(this.playing)
           this.lost()
-
       }else{
         adjacentButtons.forEach((num)=>{
           if(this.bombs.includes(num)){
@@ -124,8 +122,19 @@ class Game{
   }
   lost(){
     //should disable all buttons and display all bombs
+
+    Array.from(document.querySelectorAll(".play-area")).forEach((space)=>{
+      //debugger
+      let r = parseInt(space.dataset.row)*10;
+      let c = parseInt(space.dataset.column);
+      if (this.bombs.includes(r+c)){
+        space.innerText = "💣"
+      }
+      space.disabled = true;
+    })
+    const introduction = document.getElementById('intro')
+    introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')
-    container.innerHTML = "<h1>Game OVER</h1>"
     container.innerHTML += `<button id = "start" name="button">Play new Game!</button> <button id = "stats" name="button">Your Stats</button>`
   }
 }
