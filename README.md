@@ -1,7 +1,6 @@
-# README
+# JavaScript MineSweeper
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a Single Page application minesweeper replica. Data fetches are retrieved from Ruby on Rails API backend parsed using JSON.
 
 Things you may want to cover:
 
