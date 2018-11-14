@@ -35,63 +35,61 @@ class Game{
   createTimer(){
     const container = document.getElementById('game-container')
     container.innerHTML += `<div><h1 data-id = "1" id="clock">${this.timeTaken}</h1></div>`
-    //debugger
-    //const timer = document.getElementById('clock');
     this.playing = setInterval(()=>{
       const timer1 = document.getElementById('clock');
-      //console.log(timer,timer1);
-    //    console.log(this);
         this.timeTaken++
         timer1.innerText = this.timeTaken
-      //  console.log(this.timeTaken)
-      //debugger
-      //console.log(timer.innerText);
     },1000)
   }
+  adjacentButtons(clickedSquare){
+
+    let r = parseInt(clickedSquare.dataset.row)*10;
+    let c = parseInt(clickedSquare.dataset.column);
+    let adjacentButtons=[];
+    let decRow = r-10;
+    let incRow = r+10;
+    if (decRow >= 0){
+      if (c === 9){
+        adjacentButtons.push(decRow+(c-1));
+        adjacentButtons.push(decRow+c);
+      }else if(c===0){
+        adjacentButtons.push(decRow+c);
+        adjacentButtons.push(decRow+(c+1));
+      }else{
+        adjacentButtons.push(decRow+(c-1));
+        adjacentButtons.push(decRow+c);
+        adjacentButtons.push(decRow+(c+1));
+      }
+    }
+
+    if (c === 9){
+      adjacentButtons.push(r+(c-1));
+    }else if(c===0){
+      adjacentButtons.push(r+(c+1));
+    }else{
+      adjacentButtons.push(r+(c-1));
+      adjacentButtons.push(r+(c+1));
+    }
+    if (incRow<90){
+      if (c === 9){
+        adjacentButtons.push(incRow+(c-1));
+        adjacentButtons.push(incRow+c);
+      }else if(c===0){
+        adjacentButtons.push(incRow+c);
+        adjacentButtons.push(incRow+(c+1));
+      }else{
+        adjacentButtons.push(incRow+(c-1));
+        adjacentButtons.push(incRow+c);
+        adjacentButtons.push(incRow+(c+1));
+      }
+    }
+    return adjacentButtons;
+  }
   click(clickedButton){
-
     if (event.which === 1 && clickedButton.innerText === ""){
-
       let r = parseInt(clickedButton.dataset.row)*10;
       let c = parseInt(clickedButton.dataset.column);
-      let adjacentButtons=[];
-      let decRow = r-10;
-      let incRow = r+10;
-      if (decRow >= 0){
-        if (c === 9){
-          adjacentButtons.push(decRow+(c-1));
-          adjacentButtons.push(decRow+c);
-        }else if(c===0){
-          adjacentButtons.push(decRow+c);
-          adjacentButtons.push(decRow+(c+1));
-        }else{
-          adjacentButtons.push(decRow+(c-1));
-          adjacentButtons.push(decRow+c);
-          adjacentButtons.push(decRow+(c+1));
-        }
-      }
-
-      if (c === 9){
-        adjacentButtons.push(r+(c-1));
-      }else if(c===0){
-        adjacentButtons.push(r+(c+1));
-      }else{
-        adjacentButtons.push(r+(c-1));
-        adjacentButtons.push(r+(c+1));
-      }
-      if (incRow<90){
-        if (c === 9){
-          adjacentButtons.push(incRow+(c-1));
-          adjacentButtons.push(incRow+c);
-        }else if(c===0){
-          adjacentButtons.push(incRow+c);
-          adjacentButtons.push(incRow+(c+1));
-        }else{
-          adjacentButtons.push(incRow+(c-1));
-          adjacentButtons.push(incRow+c);
-          adjacentButtons.push(incRow+(c+1));
-        }
-      }
+      let adjacentSquares = this.adjacentButtons(clickedButton);
       let countAdjacent = 0;
 
       if(this.bombs.includes(r+c)){
@@ -99,18 +97,20 @@ class Game{
           window.clearInterval(this.playing)
           this.lost()
       }else{
-        adjacentButtons.forEach((num)=>{
+        adjacentSquares.forEach((num)=>{
           if(this.bombs.includes(num)){
             countAdjacent++
           }
         })
+
         if (countAdjacent != 0){
           clickedButton.innerText = countAdjacent
+          clickedButton.value = true;
+          clickedButton.disabled = true;
         }
         else{
-          this.multipleUncover(clickedButton)
+          this.zeroUncover(clickedButton)
         }
-        clickedButton.value = true;
         let totalClicked = Array.from(document.querySelectorAll(".play-area")).filter((elem)=>elem.value=="true").length
         if (totalClicked === (document.querySelectorAll(".play-area").length - this.bombs.length)){
           this.winner = true;
@@ -127,12 +127,37 @@ class Game{
       } else if(clickedButton.innerText === "?"){
         clickedButton.innerText = ""
       }
-    }}// works
-  multipleUncover(clickedSquare){
+    }}
+  zeroUncover(clickedSquare){
+    if (!clickedSquare){
+      return
+    }
+    else{
+      let adjacentRegions = this.adjacentButtons(clickedSquare)
+      let row = parseInt(clickedSquare.dataset.row);
+      let column = parseInt(clickedSquare.dataset.column);
+      let clickedBombs = adjacentRegions.filter((region)=>{
+        return this.bombs.includes(region)
+      })
 
-    clickedSquare.disabled = true
-    console.log("woohoo");
-    //debugger
+      if(clickedBombs.length === 0 && clickedSquare.value === ""){
+        clickedSquare.innerText = "0"
+        clickedSquare.value = true;
+        clickedSquare.disabled = true;
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row-1 && bu.dataset.column == column-1}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row-1 && bu.dataset.column == column}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row-1 && bu.dataset.column == column+1}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row && bu.dataset.column == column-1}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row && bu.dataset.column == column+1}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row+1 && bu.dataset.column == column-1}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row+1 && bu.dataset.column == column}))
+        this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row+1 && bu.dataset.column == column+1}))
+      }else{
+        clickedSquare.innerText = `${clickedBombs.length}`
+        clickedSquare.value = true;
+        clickedSquare.disabled = true;
+      }
+    }
   }
   won(){
     //Should display message along with emoji and left board
