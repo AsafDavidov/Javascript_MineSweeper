@@ -1,11 +1,16 @@
+let currentUser={};
 document.addEventListener('DOMContentLoaded', ()=>{
-  const user_header = document.createElement("h1")
-  let users = new Adapter("http://localhost:3000/api/v1/users")
-  users.getOne(1)
-  .then((user)=>{
-    user_header.innerText = "Current User: " +user.username
+  document.getElementById('login-user').addEventListener('submit',(e)=>{
+    e.preventDefault()
+    let userInput = document.getElementById('user-value').value
+    let newOrFindUserAdapter = new Adapter("http://localhost:3000/api/v1/users")
+    newOrFindUserAdapter.post({username: userInput})
+    .then((user) =>{
+      currentUser = user
+      document.getElementById('game-container').innerHTML = `<h1>Welcome ${currentUser.username}</h1><button id = "start" name="button">Play new Game!</button>
+      <button id = "stats" name="button">Your Stats</button>`
+    })
   })
-  document.getElementById('container').insertBefore(user_header,document.getElementById('game-container'))
   const app = new App();
   app.createGame();
   document.getElementById('game-container').oncontextmenu = () => false;

@@ -170,7 +170,7 @@ class Game{
       space.disabled = true;
     })
     let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
-    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: 1})
+    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: currentUser.id})
     const introduction = document.getElementById('intro')
     introduction.innerText = "YOU WIN!!!" + "😎"
     const container = document.getElementById('game-container')
@@ -178,6 +178,7 @@ class Game{
   }
   lost(){
     //should disable all buttons and display all bombs
+
     Array.from(document.querySelectorAll(".play-area")).forEach((space)=>{
       let r = parseInt(space.dataset.row)*10;
       let c = parseInt(space.dataset.column);
@@ -187,7 +188,7 @@ class Game{
       space.disabled = true;
     })
     let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
-    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: 1})
+    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: currentUser.id})
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')

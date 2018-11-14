@@ -13,12 +13,11 @@ class App {
         const container = document.getElementById('game-container')
         let myGames=[];
         let user = new Adapter("http://localhost:3000/api/v1/users")
-        user.getOne(1)
+        user.getOne(currentUser.id)
         .then((json)=>{
           myGames = json.games.map((stat)=>{
             return new Game(stat)
           })
-          console.log(myGames);
           if (myGames.length > 0){
             let fiveGamesString = Game.renderGames(myGames.slice(Math.max(myGames.length - 5, 0)).reverse())
             let fullHTML =
@@ -35,10 +34,10 @@ class App {
                     </thead>
                   `
                container.innerHTML = fullHTML + fiveGamesString + "</table></div>"
-               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
+               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button>`
           }
           else{
-            container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
+            container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button>`
           }
       })
 
@@ -46,12 +45,10 @@ class App {
       else if(event.target.id === "reset"){
         if(confirm("Do you really want to reset your stats?")){
           let delAdapter = new Adapter("http://localhost:3000/api/v1/games")
-          delAdapter.destroyGames(1)
+          delAdapter.destroyGames(currentUser.id)
           .then(
             container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
           )
-        }else{
-          //console.log("nope");
         }
       }
     })
