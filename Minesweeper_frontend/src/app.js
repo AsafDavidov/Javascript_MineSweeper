@@ -18,25 +18,41 @@ class App {
           myGames = json.games.map((stat)=>{
             return new Game(stat)
           })
+          console.log(myGames);
+          if (myGames.length > 0){
+            let fiveGamesString = Game.renderGames(myGames.slice(Math.max(myGames.length - 5, 0)).reverse())
+            let fullHTML =
+            `<div class="stat">
+                  <h1>LifeTime Stats</h1>
+                  <h2>Average Time Taken: ${Game.averageTimes(myGames)}</h2>
+                  <h2>Win Percentage: ${Game.winPercentage(myGames)}%`+
+                  `
+                  <h1> Last Five Games</h1>
+                  <table>
+                    <thead>
+                      <th>Won/Lost</th>
+                      <th>Time Taken</th>
+                    </thead>
+                  `
+               container.innerHTML = fullHTML + fiveGamesString + "</table></div>"
+               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
+          }
+          else{
+            container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
+          }
+      })
 
-        let fiveGamesString = Game.renderGames(myGames.slice(Math.max(myGames.length - 5, 1)).reverse())
-        let fullHTML =
-        `<div class="stat">
-              <h1>LifeTime Stats</h1>
-              <h2>Average Time Taken: ${Game.averageTimes(myGames)}</h2>
-              <h2>Win Percentage: ${Game.winPercentage(myGames)}%`+
-              `
-              <h1> Last Five Games</h1>
-              <table>
-                <thead>
-                  <th>Won/Lost</th>
-                  <th>Time Taken</th>
-                </thead>
-              `
-           container.innerHTML = fullHTML + fiveGamesString + "</table></div>"
-           container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
-        })
-
+      }
+      else if(event.target.id === "reset"){
+        if(confirm("Do you really want to reset your stats?")){
+          let delAdapter = new Adapter("http://localhost:3000/api/v1/games")
+          delAdapter.destroyGames(1)
+          .then(
+            container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
+          )
+        }else{
+          //console.log("nope");
+        }
       }
     })
   }

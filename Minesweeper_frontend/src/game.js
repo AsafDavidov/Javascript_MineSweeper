@@ -4,9 +4,9 @@ class Game{
     this.id = data.id;
     this.timeTaken = !!data.time_taken ? data.time_taken : 0;
     this.winner = data.winner;
-    this.bombs = [];//rand Array of ten unique bombs
+    this.bombs = [];
     this.playing;
-    //this.uncovered in order to keep track of game progress
+
     //this.rows for dynamic code
     //this.columns for dynamic code
   }

@@ -9,6 +9,11 @@ class Api::V1::GamesController < ApplicationController
     render json: g, status: :created
   end
 
+  def destroy
+    user = User.find(params[:id])
+    user.games.destroy_all
+    render json: user, status: :ok
+  end
   private
 
   def game_params

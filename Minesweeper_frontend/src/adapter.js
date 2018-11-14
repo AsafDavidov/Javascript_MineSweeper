@@ -21,4 +21,10 @@ class Adapter{
     })
     .then((resp)=> resp.json())
   }
+  destroyGames(id){
+  return fetch( `${this.url}/${id}`, {
+    method: "DELETE"
+  })
+  .then((resp)=> resp.json())
+  }
 }
