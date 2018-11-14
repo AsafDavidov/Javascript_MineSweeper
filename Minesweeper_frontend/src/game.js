@@ -127,8 +127,9 @@ class Game{
       }
       space.disabled = true;
     })
-    let addGameAdapter = new Adapter("http://localhost:3000/api/v1/users")
+    let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
     addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: 1})
+    .then((obj)=>{debugger})
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')

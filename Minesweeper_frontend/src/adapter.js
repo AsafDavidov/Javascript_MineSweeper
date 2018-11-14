@@ -14,10 +14,10 @@ class Adapter{
     return fetch(this.url, {
       method: "POST",
       headers: {
-        "Content-Type" : "application/json"
+        "Content-Type": "application/json; charset=utf-8"
       },
       body: JSON.stringify(obj)
     })
-    .then(resp=>resp.json())
+    .then((resp)=>resp.json())
   }
 }
