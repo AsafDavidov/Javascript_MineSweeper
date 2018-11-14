@@ -1,19 +1,24 @@
 class Game{
   constructor(data){
+
+    this.id = data.id;
+    this.timeTaken = !!data.time_taken ? data.time_taken : 0;
+    this.winner = data.winner;
+    this.bombs = [];//rand Array of ten unique bombs
+    this.playing;
+    //this.uncovered in order to keep track of game progress
+    //this.rows for dynamic code
+    //this.columns for dynamic code
+  }
+  createDisplay(){
+    //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
     let arr = [];
     while(arr.length<10){
       let num = Math.floor(Math.random()*100);
       if(arr.indexOf(num) === -1) arr.push(num);
     };
-    this.id = data.id;
-    this.timeTaken = !!data.time_taken ? data.time_taken : 0;
-    this.winner = data.winner;
-    this.bombs = arr;//rand Array of ten unique bombs
-    this.playing;
-    //this.rows for dynamic code
-    //this.columns for dynamic code
-  }
-  createDisplay(){
+    this.bombs = arr
+
     const container = document.getElementById('game-container')
     container.innerHTML = '<h1 id = "intro">Start!</h1>'
     this.createTimer()
@@ -26,7 +31,7 @@ class Game{
       fullHTML +="</tr>"
     }
     fullHTML += "</table></div>"
-    container.innerHTML+=fullHTML} //works
+    container.innerHTML+=fullHTML}
   createTimer(){
     const container = document.getElementById('game-container')
     container.innerHTML += `<div><h1 data-id = "1" id="clock">${this.timeTaken}</h1></div>`
@@ -42,11 +47,11 @@ class Game{
       //debugger
       //console.log(timer.innerText);
     },1000)
-  } //works
+  }
   click(clickedButton){
 
     if (event.which === 1 && clickedButton.innerText === ""){
-      // console.log(this);
+
       let r = parseInt(clickedButton.dataset.row)*10;
       let c = parseInt(clickedButton.dataset.column);
       let adjacentButtons=[];
@@ -88,7 +93,7 @@ class Game{
         }
       }
       let countAdjacent = 0;
-      //console.log(this);
+
       if(this.bombs.includes(r+c)){
           this.winner = false
           window.clearInterval(this.playing)
@@ -99,7 +104,12 @@ class Game{
             countAdjacent++
           }
         })
-        clickedButton.innerText = countAdjacent
+        if (countAdjacent != 0){
+          clickedButton.innerText = countAdjacent
+        }
+        else{
+          this.multipleUncover(clickedButton)
+        }
         clickedButton.value = true;
         let totalClicked = Array.from(document.querySelectorAll(".play-area")).filter((elem)=>elem.value=="true").length
         if (totalClicked === (document.querySelectorAll(".play-area").length - this.bombs.length)){
@@ -118,6 +128,12 @@ class Game{
         clickedButton.innerText = ""
       }
     }}// works
+  multipleUncover(clickedSquare){
+
+    clickedSquare.disabled = true
+    console.log("woohoo");
+    //debugger
+  }
   won(){
     //Should display message along with emoji and left board
     Array.from(document.querySelectorAll(".play-area")).forEach((space)=>{
