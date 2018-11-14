@@ -9,3 +9,8 @@ User.create({username: "Asaf_woop"})
 Game.create({time_taken: 120, winner: true, user_id: 1})
 Game.create({time_taken: 360, winner: true, user_id: 1})
 Game.create({time_taken: 50, winner: false, user_id: 1})
+
+User.create({username: "Asaf_dos"})
+Game.create({time_taken: 121, winner: true, user_id: 2})
+Game.create({time_taken: 261, winner: true, user_id: 2})
+Game.create({time_taken: 51, winner: false, user_id: 2})

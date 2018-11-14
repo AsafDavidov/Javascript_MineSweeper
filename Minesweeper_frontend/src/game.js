@@ -1,9 +1,9 @@
 class Game{
   constructor(data){
     this.id = data.id;
-    this.timeTaken = 0;
+    this.timeTaken = !!data.time_taken ? data.time_taken : 0;
     this.winner = data.winner;
-    this.bombs = [0,1,2,3,4,5,6,7,8,13];
+    this.bombs = [0,1,2,3,4,5,6,7,8,13];//rand Array of ten bombs
     this.playing;
     //this.rows
     //this.columns for dynamic code
@@ -21,9 +21,7 @@ class Game{
       fullHTML +="</tr>"
     }
     fullHTML += "</table></div>"
-    container.innerHTML+=fullHTML
-
-  }
+    container.innerHTML+=fullHTML} //works
   createTimer(){
     const container = document.getElementById('game-container')
     container.innerHTML += `<div><h1 data-id = "1" id="clock">${this.timeTaken}</h1></div>`
@@ -39,7 +37,7 @@ class Game{
       //debugger
       //console.log(timer.innerText);
     },1000)
-  }
+  } //works
   click(clickedButton){
 
     if (event.which === 1 && clickedButton.innerText === ""){
@@ -115,16 +113,13 @@ class Game{
       } else if(clickedButton.innerText === "?"){
         clickedButton.innerText = ""
       }
-    }
-  }
+    }}// works
   won(){
     //Should display message along with emoji and left board
   }
   lost(){
     //should disable all buttons and display all bombs
-
     Array.from(document.querySelectorAll(".play-area")).forEach((space)=>{
-      //debugger
       let r = parseInt(space.dataset.row)*10;
       let c = parseInt(space.dataset.column);
       if (this.bombs.includes(r+c)){
@@ -132,10 +127,24 @@ class Game{
       }
       space.disabled = true;
     })
+    let addGameAdapter = new Adapter("http://localhost:3000/api/v1/users")
+    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: 1})
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')
-    container.innerHTML += `<button id = "start" name="button">Play new Game!</button> <button id = "stats" name="button">Your Stats</button>`
+    container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
+  }
+  renderGame(){
+    if(this.winner){
+      return `<tr><td>Won</td><td>${this.timeTaken}</td></tr>`
+    }
+    else{
+      return `<tr><td>Lost</td><td>${this.timeTaken}</td></tr>`
+    }
+  }
+  static renderGames(gamesArr){
+    return gamesArr.map((game)=>{
+      return game.renderGame()
+    }).join('')
   }
 }
-Game.all = [];
