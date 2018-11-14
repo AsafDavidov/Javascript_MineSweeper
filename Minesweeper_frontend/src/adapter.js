@@ -11,6 +11,7 @@ class Adapter{
     .then(resp=>resp.json())
   }
   post(obj){
+    console.log(obj);
     return fetch(this.url, {
       method: "POST",
       headers: {
@@ -18,6 +19,6 @@ class Adapter{
       },
       body: JSON.stringify(obj)
     })
-    .then((resp)=>resp.json())
+    .then((resp)=> resp.json())
   }
 }

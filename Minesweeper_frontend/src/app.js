@@ -12,25 +12,28 @@ class App {
       else if(event.target.id === "stats"){
         const container = document.getElementById('game-container')
         let myGames=[];
+        let user = new Adapter("http://localhost:3000/api/v1/users")
+        user.getOne(1)
+        .then((json)=>{
+          myGames = json.games.map((stat)=>{
+            return new Game(stat)
+          })
+
+        let fiveGamesString = Game.renderGames(myGames.slice(Math.max(myGames.length - 5, 1)).reverse())
         let fullHTML =
         `<div class="stat">
-              <h1> Lifetime Stats</h1>
+              <h1>LifeTime Stats</h1>
+              <h2>Average Time Taken: ${Game.averageTimes(myGames)}</h2>
+              <h2>Win Percentage: ${Game.winPercentage(myGames)}%`+
+              `
+              <h1> Last Five Games</h1>
               <table>
                 <thead>
                   <th>Won/Lost</th>
                   <th>Time Taken</th>
                 </thead>
               `
-        let myGamesAdapter = new Adapter("http://localhost:3000/api/v1/games")
-        myGamesAdapter.getAll()
-        .then((games)=>{
-          myGames = games.filter((game)=>{
-            return game.user_id === 1
-          }).map((stat)=>{
-            return new Game(stat)
-          })
-          let gamesString = Game.renderGames(myGames)
-           container.innerHTML = fullHTML + gamesString + "</table></div>"
+           container.innerHTML = fullHTML + fiveGamesString + "</table></div>"
            container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
         })
 

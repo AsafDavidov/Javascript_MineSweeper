@@ -1,11 +1,16 @@
 class Game{
   constructor(data){
+    let arr = [];
+    while(arr.length<10){
+      let num = Math.floor(Math.random()*100);
+      if(arr.indexOf(num) === -1) arr.push(num);
+    };
     this.id = data.id;
     this.timeTaken = !!data.time_taken ? data.time_taken : 0;
     this.winner = data.winner;
-    this.bombs = [0,1,2,3,4,5,6,7,8,13];//rand Array of ten bombs
+    this.bombs = arr;//rand Array of ten unique bombs
     this.playing;
-    //this.rows
+    //this.rows for dynamic code
     //this.columns for dynamic code
   }
   createDisplay(){
@@ -99,7 +104,6 @@ class Game{
         let totalClicked = Array.from(document.querySelectorAll(".play-area")).filter((elem)=>elem.value=="true").length
         if (totalClicked === (document.querySelectorAll(".play-area").length - this.bombs.length)){
           this.winner = true;
-          //this.timeTaken = whatever the time is
           window.clearInterval(this.playing)
           this.won()
         }
@@ -116,6 +120,20 @@ class Game{
     }}// works
   won(){
     //Should display message along with emoji and left board
+    Array.from(document.querySelectorAll(".play-area")).forEach((space)=>{
+      let r = parseInt(space.dataset.row)*10;
+      let c = parseInt(space.dataset.column);
+      if (this.bombs.includes(r+c)){
+        space.innerText = "💣"
+      }
+      space.disabled = true;
+    })
+    let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
+    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: 1})
+    const introduction = document.getElementById('intro')
+    introduction.innerText = "YOU WIN!!!" + "😎"
+    const container = document.getElementById('game-container')
+    container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
   }
   lost(){
     //should disable all buttons and display all bombs
@@ -129,7 +147,6 @@ class Game{
     })
     let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
     addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: 1})
-    .then((obj)=>{debugger})
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')
@@ -147,5 +164,13 @@ class Game{
     return gamesArr.map((game)=>{
       return game.renderGame()
     }).join('')
+  }
+  static averageTimes(gamesArr){
+    return Number.parseFloat(gamesArr.reduce((accum,game)=> {return accum + game.timeTaken},0)/gamesArr.length).toFixed(2)
+  }
+  static winPercentage(gamesArr){
+    let wonGames = gamesArr.filter((game)=>{return game.winner}).length
+    let percentage = wonGames/gamesArr.length
+    return Number.parseFloat(percentage*100).toFixed(2)
   }
 }

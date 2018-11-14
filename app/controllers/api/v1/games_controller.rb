@@ -6,6 +6,7 @@ class Api::V1::GamesController < ApplicationController
   def create
     g = Game.new(game_params)
     g.save
+    render json: g, status: :created
   end
 
   private
