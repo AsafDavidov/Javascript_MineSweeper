@@ -117,17 +117,20 @@ body{
   padding-left: 8px;
   padding-right: 8px;
 }
-#buttong-grid table{
-  border:0;
+#button-grid table{
+  box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
 }
-#button-grid tr, td{
+#button-grid tr, #button-grid td{
   height: 30px;
   width: 30px;
   border: 0;
-
+  background-color: rgba(167, 241, 233, 0.6);
 }
 #button-grid button{
   height:100%;
   width:100%;
   background-color: #7beadf;
+}
+#space-down{
+  padding-top:200px;
 }

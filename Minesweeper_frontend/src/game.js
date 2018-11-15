@@ -20,7 +20,7 @@ class Game{
     this.bombs = arr
 
     const container = document.getElementById('game-container')
-    container.innerHTML = '<h1 id = "intro">Start!</h1>'
+    container.innerHTML = '<div id="space-down"></div><h1 id = "intro">Start!</h1>'
     this.createTimer()
     let fullHTML = '<div id="button-grid"><table>'
     for (let i = 0; i < 10; i++) {
@@ -174,7 +174,7 @@ class Game{
     let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
     addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: currentUser.id})
     const introduction = document.getElementById('intro')
-    introduction.innerText = "YOU WIN!!!" + "😎"
+    introduction.innerText = "😎"+ "YOU WIN!" + "😎"
     const container = document.getElementById('game-container')
     container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
   }
@@ -208,7 +208,7 @@ class Game{
     switch (num){
       case 0:
       clicked.innerText = ""
-      clicked.style.backgroundColor = "rgb(28,176,161,0.5)"
+      clicked.style.backgroundColor = "rgb(28,176,161,0.8)"
       break
       case 1:
       clicked.style.color = "green"
