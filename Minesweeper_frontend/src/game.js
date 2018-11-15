@@ -8,26 +8,21 @@ class Game{
     this.playing;
     this.rows = 10;
     this.columns = 10;
+    this.difficulty = "easy"
   }
   createDisplay(){
     //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
-    let num = 10;
-    let diff;
-    if(!!document.getElementById('list')){
-      if (document.getElementById('list').value ==="easy"){
-        num = 10;
-        diff = "easy"
-      }else if (document.getElementById('list').value ==="medium"){
-        num = 40;
-        diff = "medium"
-      }else if (document.getElementById('list').value ==="hard"){
-        num = 70;
-        diff = "hard"
-      }
+    let num;
+    if (this.difficulty==="easy"){
+      num = 10;
+    }else if (this.difficulty==="medium"){
+      num = 40;
+    }else if (this.difficulty==="hard"){
+      num = 70;
     }
     let arr = [];
     while(arr.length<num){
-      let num = Math.floor(Math.random()*100);
+      let num = Math.floor(Math.random()*(this.rows*this.columns));
       if(arr.indexOf(num) === -1) arr.push(num);
     };
     this.bombs = arr
@@ -42,28 +37,29 @@ class Game{
       }
       fullHTML +="</tr>"
     }
-    if(!!diff){
-      if (diff ==="easy"){
-        fullHTML += '</table></div><div id="difficulty"><select id="list"><option selected value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
-      }else if (diff ==="medium"){
-        fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option selected value="medium">Medium</option><option value="hard">Hard</option></select></div>'
-      }else if (diff ==="hard"){
-        fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option value="medium">Medium</option><option selected value="hard">Hard</option></select></div>'
-      }
-    }else{
-      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+
+    if (this.difficulty ==="easy"){
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option selected value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+    }else if (this.difficulty ==="medium"){
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option selected value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+    }else if (this.difficulty ==="hard"){
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option value="medium">Medium</option><option selected value="hard">Hard</option></select></div>'
     }
+
     container.innerHTML+=fullHTML;
     document.getElementById('list').onchange = ()=> {
       if (document.getElementById('list').value ==="easy"){
         this.rows = 10;
         this.columns = 10;
+        this.difficulty = "easy"
       }else if (document.getElementById('list').value ==="medium"){
         this.rows = 15;
         this.columns = 20;
+        this.difficulty = "medium"
       }else if (document.getElementById('list').value ==="hard"){
         this.rows = 20;
         this.columns = 25;
+        this.difficulty = "hard"
       }
       this.createDisplay();
     }
@@ -85,7 +81,7 @@ class Game{
     let decRow = r-10;
     let incRow = r+10;
     if (decRow >= 0){
-      if (c === 9){
+      if (c === (this.columns-1)){
         adjacentButtons.push(decRow+(c-1));
         adjacentButtons.push(decRow+c);
       }else if(c===0){
@@ -98,7 +94,7 @@ class Game{
       }
     }
 
-    if (c === 9){
+    if (c === (this.columns-1)){
       adjacentButtons.push(r+(c-1));
     }else if(c===0){
       adjacentButtons.push(r+(c+1));
@@ -106,8 +102,8 @@ class Game{
       adjacentButtons.push(r+(c-1));
       adjacentButtons.push(r+(c+1));
     }
-    if (incRow<90){
-      if (c === 9){
+    if (incRow<((this.rows-1)*10)){
+      if (c === (this.columns-1)){
         adjacentButtons.push(incRow+(c-1));
         adjacentButtons.push(incRow+c);
       }else if(c===0){
