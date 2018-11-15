@@ -6,9 +6,8 @@ class Game{
     this.winner = data.winner;
     this.bombs = [];
     this.playing;
-
-    //this.rows for dynamic code
-    //this.columns for dynamic code
+    this.rows = 10;
+    this.columns = 10;
   }
   createDisplay(){
     //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
@@ -23,15 +22,17 @@ class Game{
     container.innerHTML = '<div id="space-down"></div><h1 id = "intro">Start!</h1>'
     this.createTimer()
     let fullHTML = '<div id="button-grid"><table>'
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < this.rows; i++) {
       fullHTML+= "<tr>"
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < this.columns; j++) {
         fullHTML += `<td><button class="play-area" data-row = "${i}" data-column ="${j}"></button></td>`
       }
       fullHTML +="</tr>"
     }
-    fullHTML += "</table></div>"
-    container.innerHTML+=fullHTML}
+    fullHTML += '</table></div><div id="difficulty"><select><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+    container.innerHTML+=fullHTML
+    document.getElementById('difficulty')
+  }
   createTimer(){
     const container = document.getElementById('game-container')
     container.innerHTML += `<div><h1 data-id = "1" id="clock">${this.timeTaken}</h1></div>`
