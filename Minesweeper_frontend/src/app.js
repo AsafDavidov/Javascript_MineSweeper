@@ -30,7 +30,8 @@ class App {
                   <table>
                     <thead>
                     <th>Time Taken</th>
-                      <th>Won/Lost</th>
+                    <th>Difficulty</th>
+                    <th>Won/Lost</th>
                     </thead>
                   `
                container.innerHTML = fullHTML + fiveGamesString + "</table></div>"

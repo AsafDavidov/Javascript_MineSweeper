@@ -8,16 +8,18 @@ class Game{
     this.playing;
     this.rows = 10;
     this.columns = 10;
-    this.difficulty = "easy"
+    this.difficulty = !!data.difficulty ? data.difficulty : "Easy";
   }
   createDisplay(){
     //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
+    this.timeTaken = 0;
+    window.clearInterval(this.playing)
     let num;
-    if (this.difficulty==="easy"){
+    if (this.difficulty==="Easy"){
       num = 10;
-    }else if (this.difficulty==="medium"){
+    }else if (this.difficulty==="Medium"){
       num = 40;
-    }else if (this.difficulty==="hard"){
+    }else if (this.difficulty==="Hard"){
       num = 70;
     }
     let arr = [];
@@ -38,28 +40,28 @@ class Game{
       fullHTML +="</tr>"
     }
 
-    if (this.difficulty ==="easy"){
-      fullHTML += '</table></div><div id="difficulty"><select id="list"><option selected value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
-    }else if (this.difficulty ==="medium"){
-      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option selected value="medium">Medium</option><option value="hard">Hard</option></select></div>'
-    }else if (this.difficulty ==="hard"){
-      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option value="medium">Medium</option><option selected value="hard">Hard</option></select></div>'
+    if (this.difficulty ==="Easy"){
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option selected value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option></select></div>'
+    }else if (this.difficulty ==="Medium"){
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="Easy">Easy</option><option selected value="Medium">Medium</option><option value="Hard">Hard</option></select></div>'
+    }else if (this.difficulty ==="Hard"){
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="Easy">Easy</option><option value="Medium">Medium</option><option selected value="Hard">Hard</option></select></div>'
     }
 
     container.innerHTML+=fullHTML;
     document.getElementById('list').onchange = ()=> {
-      if (document.getElementById('list').value ==="easy"){
+      if (document.getElementById('list').value ==="Easy"){
         this.rows = 10;
         this.columns = 10;
-        this.difficulty = "easy"
-      }else if (document.getElementById('list').value ==="medium"){
+        this.difficulty = "Easy"
+      }else if (document.getElementById('list').value ==="Medium"){
         this.rows = 15;
         this.columns = 20;
-        this.difficulty = "medium"
-      }else if (document.getElementById('list').value ==="hard"){
+        this.difficulty = "Medium"
+      }else if (document.getElementById('list').value ==="Hard"){
         this.rows = 20;
         this.columns = 25;
-        this.difficulty = "hard"
+        this.difficulty = "Hard"
       }
       this.createDisplay();
     }
@@ -69,17 +71,19 @@ class Game{
     container.innerHTML += `<div><h1 data-id = "1" id="clock">${this.timeTaken}</h1></div>`
     this.playing = setInterval(()=>{
       const timer1 = document.getElementById('clock');
+      if (!!timer1){
         this.timeTaken++
         timer1.innerText = this.timeTaken
+      }
     },1000)
   }
   adjacentButtons(clickedSquare){
-
     let r = parseInt(clickedSquare.dataset.row)*10;
     let c = parseInt(clickedSquare.dataset.column);
     let adjacentButtons=[];
     let decRow = r-10;
     let incRow = r+10;
+
     if (decRow >= 0){
       if (c === (this.columns-1)){
         adjacentButtons.push(decRow+(c-1));
@@ -102,7 +106,7 @@ class Game{
       adjacentButtons.push(r+(c-1));
       adjacentButtons.push(r+(c+1));
     }
-    if (incRow<((this.rows-1)*10)){
+    if (incRow<=((this.rows-1)*10)){
       if (c === (this.columns-1)){
         adjacentButtons.push(incRow+(c-1));
         adjacentButtons.push(incRow+c);
@@ -186,7 +190,6 @@ class Game{
         this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row+1 && bu.dataset.column == column+1}))
       }else{
         clickedSquare.innerText = `${clickedBombs.length}`
-        //debugger
         clickedSquare.value = true;
         clickedSquare.disabled = true;
         this.styleNumber(clickedSquare,clickedBombs.length)
@@ -204,7 +207,7 @@ class Game{
       space.disabled = true;
     })
     let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
-    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: currentUser.id})
+    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, difficulty: this.difficulty, user_id: currentUser.id})
     const introduction = document.getElementById('intro')
     introduction.innerText = "😎"+ "YOU WIN!" + "😎"
     const container = document.getElementById('game-container')
@@ -222,7 +225,7 @@ class Game{
       space.disabled = true;
     })
     let addGameAdapter = new Adapter("http://localhost:3000/api/v1/games")
-    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, user_id: currentUser.id})
+    addGameAdapter.post({time_taken: this.timeTaken, winner:this.winner, difficulty: this.difficulty, user_id: currentUser.id})
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')
@@ -230,10 +233,10 @@ class Game{
   }
   renderGame(){
     if(this.winner){
-      return `<tr><td>${this.timeTaken}</td><td>Won</td></tr>`
+      return `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Won</td></tr>`
     }
     else{
-      return `<tr><td>${this.timeTaken}</td><td>Lost</td></tr>`
+      return `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Lost</td></tr>`
     }
   }
   styleNumber(clicked,num){
@@ -276,7 +279,6 @@ class Game{
       break
     }
   }
-
   static renderGames(gamesArr){
     return gamesArr.map((game)=>{
       return game.renderGame()

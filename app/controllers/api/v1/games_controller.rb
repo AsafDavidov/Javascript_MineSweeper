@@ -17,6 +17,6 @@ class Api::V1::GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:time_taken,:winner,:user_id)
+    params.require(:game).permit(:time_taken,:winner,:user_id,:difficulty)
   end
 end
