@@ -11,13 +11,26 @@ class Game{
   }
   createDisplay(){
     //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
+    let num = 10;
+    let diff;
+    if(!!document.getElementById('list')){
+      if (document.getElementById('list').value ==="easy"){
+        num = 10;
+        diff = "easy"
+      }else if (document.getElementById('list').value ==="medium"){
+        num = 40;
+        diff = "medium"
+      }else if (document.getElementById('list').value ==="hard"){
+        num = 70;
+        diff = "hard"
+      }
+    }
     let arr = [];
-    while(arr.length<10){
+    while(arr.length<num){
       let num = Math.floor(Math.random()*100);
       if(arr.indexOf(num) === -1) arr.push(num);
     };
     this.bombs = arr
-
     const container = document.getElementById('game-container')
     container.innerHTML = '<div id="space-down"></div><h1 id = "intro">Start!</h1>'
     this.createTimer()
@@ -29,9 +42,31 @@ class Game{
       }
       fullHTML +="</tr>"
     }
-    fullHTML += '</table></div><div id="difficulty"><select><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
-    container.innerHTML+=fullHTML
-    document.getElementById('difficulty')
+    if(!!diff){
+      if (diff ==="easy"){
+        fullHTML += '</table></div><div id="difficulty"><select id="list"><option selected value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+      }else if (diff ==="medium"){
+        fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option selected value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+      }else if (diff ==="hard"){
+        fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option value="medium">Medium</option><option selected value="hard">Hard</option></select></div>'
+      }
+    }else{
+      fullHTML += '</table></div><div id="difficulty"><select id="list"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>'
+    }
+    container.innerHTML+=fullHTML;
+    document.getElementById('list').onchange = ()=> {
+      if (document.getElementById('list').value ==="easy"){
+        this.rows = 10;
+        this.columns = 10;
+      }else if (document.getElementById('list').value ==="medium"){
+        this.rows = 15;
+        this.columns = 20;
+      }else if (document.getElementById('list').value ==="hard"){
+        this.rows = 20;
+        this.columns = 25;
+      }
+      this.createDisplay();
+    }
   }
   createTimer(){
     const container = document.getElementById('game-container')
@@ -245,6 +280,7 @@ class Game{
       break
     }
   }
+
   static renderGames(gamesArr){
     return gamesArr.map((game)=>{
       return game.renderGame()
