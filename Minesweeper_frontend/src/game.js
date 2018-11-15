@@ -154,6 +154,7 @@ class Game{
         this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row+1 && bu.dataset.column == column+1}))
       }else{
         clickedSquare.innerText = `${clickedBombs.length}`
+        //debugger
         clickedSquare.value = true;
         clickedSquare.disabled = true;
         this.styleNumber(clickedSquare,clickedBombs.length)
@@ -197,40 +198,49 @@ class Game{
   }
   renderGame(){
     if(this.winner){
-      return `<tr><td>Won</td><td>${this.timeTaken}</td></tr>`
+      return `<tr><td>${this.timeTaken}</td><td>Won</td></tr>`
     }
     else{
-      return `<tr><td>Lost</td><td>${this.timeTaken}</td></tr>`
+      return `<tr><td>${this.timeTaken}</td><td>Lost</td></tr>`
     }
   }
   styleNumber(clicked,num){
     switch (num){
       case 0:
       clicked.innerText = ""
+      clicked.style.backgroundColor = "rgb(28,176,161,0.5)"
       break
       case 1:
       clicked.style.color = "green"
+      clicked.style.fontWeight = 900
       break
       case 2:
       clicked.style.color = "blue"
+      clicked.style.fontWeight = 900
       break
       case 3:
       clicked.style.color = "maroon"
+      clicked.style.fontWeight = 900
       break
       case 4:
       clicked.style.color = "olive"
+      clicked.style.fontWeight = 900
       break
       case 5:
       clicked.style.color = "orange"
+      clicked.style.fontWeight = 900
       break
       case 6:
       clicked.style.color = "yellowgreen"
+      clicked.style.fontWeight = 900
       break
       case 7:
       clicked.style.color = "yellow"
+      clicked.style.fontWeight = 900
       break
       case 8:
       clicked.style.color = "brown"
+      clicked.style.fontWeight = 900
       break
     }
   }

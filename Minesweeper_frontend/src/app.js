@@ -23,14 +23,14 @@ class App {
             let fullHTML =
             `<div class="stat">
                   <h1>LifeTime Stats</h1>
-                  <h2>Average Time Taken: ${Game.averageTimes(myGames)}</h2>
+                  <h2>Average Time Taken: ${Game.averageTimes(myGames)} seconds</h2>
                   <h2>Win Percentage: ${Game.winPercentage(myGames)}%`+
                   `
                   <h1> Last Five Games</h1>
                   <table>
                     <thead>
+                    <th>Time Taken</th>
                       <th>Won/Lost</th>
-                      <th>Time Taken</th>
                     </thead>
                   `
                container.innerHTML = fullHTML + fiveGamesString + "</table></div>"

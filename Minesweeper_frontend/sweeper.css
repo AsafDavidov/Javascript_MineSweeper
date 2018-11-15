@@ -1,21 +1,29 @@
-h1{
+html{
   font-family: 'Acme', sans-serif;
+}
+h1{
   letter-spacing: 1px;
-  color: SaddleBrown;
+  color: #40e0d0;
+  font-size: 36px;
+}
+h2{
+  letter-spacing: 1px;
+  color: #40e0d0;;
+  margin-bottom: 6px;
+  margin-top: 6px;
 }
 input[type=text]{
-  color: SaddleBrown;
+  color: #693D3D;
   width: 78%;
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
-  font-family: 'Acme', sans-serif;
   border-radius: 2px;
   letter-spacing: 1px;
   font-size: 15px;
 }
 input[type=submit]{
-  background-color: SaddleBrown;
+  background-color: #693D3D;
   border: none;
   color: white;
   padding-top:12px;
@@ -23,15 +31,17 @@ input[type=submit]{
   margin-left:12px;
   cursor: pointer;
   border-radius: 4px;
+  box-shadow: 1px 1px 1px #999;
 }
 table{
   border-collapse: collapse;
 }
-table, td, tr, th{
+/* table, td, tr, th{
   border: 1px solid black;
-}
+} */
+
 body{
-  background-image: url("https://www.aim.org/wp-content/uploads/2018/04/Chalbi_Desert_Panorama.jpg");
+  background-image: url("https://static.wixstatic.com/media/0b8670_c56c3d4e2a4c4e1d83f38b12ae4ded95~mv2.gif");
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -48,13 +58,76 @@ body{
 }
 #game-container{
   position:relative;
-  top:-200px;
+  top: -200px;
 }
-/* td{
-  width:50px;
-  height:50px;
-} */
-/* button:disabled{
-  background-color: red;
-  color: red;
-} */
+#start{
+  background-color: #693D3D;
+  border: none;
+  color: white;
+  padding-top:12px;
+  padding-bottom:12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 15px;
+  box-shadow: 1px 1px 1px #999;
+}
+#stats{
+  background-color: #693D3D;
+  border: none;
+  color: white;
+  padding-top:12px;
+  padding-bottom:12px;
+  margin-left:30px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 15px;
+  box-shadow: 1px 1px 1px #999;
+}
+#reset{
+  background-color: #693D3D;
+  border: none;
+  color: white;
+  padding-top:12px;
+  padding-bottom:12px;
+  margin-left:20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 15px;
+  box-shadow: 1px 1px 1px #999;
+}
+.stat{
+  padding-top: 200px;
+}
+.stat table{
+  border: 6px solid #46211A;
+  color: ghostwhite;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  background-color: #BA5536;
+  border-radius: 15px;
+  overflow:hidden;
+
+}
+.stat th, .stat td{
+  width: 30%;
+  border-color: #46211A;
+  border: 2px solid #46211A;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+#buttong-grid table{
+  border:0;
+}
+#button-grid tr, td{
+  height: 30px;
+  width: 30px;
+  border: 0;
+
+}
+#button-grid button{
+  height:100%;
+  width:100%;
+  background-color: #7beadf;
+}
