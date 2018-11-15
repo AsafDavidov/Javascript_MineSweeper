@@ -107,6 +107,7 @@ class Game{
           clickedButton.innerText = countAdjacent
           clickedButton.value = true;
           clickedButton.disabled = true;
+          this.styleNumber(clickedButton,countAdjacent)
         }
         else{
           this.zeroUncover(clickedButton)
@@ -139,9 +140,8 @@ class Game{
       let clickedBombs = adjacentRegions.filter((region)=>{
         return this.bombs.includes(region)
       })
-
       if(clickedBombs.length === 0 && clickedSquare.value === ""){
-        clickedSquare.innerText = "0"
+        this.styleNumber(clickedSquare,0)
         clickedSquare.value = true;
         clickedSquare.disabled = true;
         this.zeroUncover(Array.from(document.getElementById("button-grid").querySelectorAll(".play-area")).find((bu)=>{return bu.dataset.row == row-1 && bu.dataset.column == column-1}))
@@ -156,6 +156,7 @@ class Game{
         clickedSquare.innerText = `${clickedBombs.length}`
         clickedSquare.value = true;
         clickedSquare.disabled = true;
+        this.styleNumber(clickedSquare,clickedBombs.length)
       }
     }
   }
@@ -202,6 +203,37 @@ class Game{
       return `<tr><td>Lost</td><td>${this.timeTaken}</td></tr>`
     }
   }
+  styleNumber(clicked,num){
+    switch (num){
+      case 0:
+      clicked.innerText = ""
+      break
+      case 1:
+      clicked.style.color = "green"
+      break
+      case 2:
+      clicked.style.color = "blue"
+      break
+      case 3:
+      clicked.style.color = "maroon"
+      break
+      case 4:
+      clicked.style.color = "olive"
+      break
+      case 5:
+      clicked.style.color = "orange"
+      break
+      case 6:
+      clicked.style.color = "yellowgreen"
+      break
+      case 7:
+      clicked.style.color = "yellow"
+      break
+      case 8:
+      clicked.style.color = "brown"
+      break
+    }
+  }
   static renderGames(gamesArr){
     return gamesArr.map((game)=>{
       return game.renderGame()
@@ -215,4 +247,5 @@ class Game{
     let percentage = wonGames/gamesArr.length
     return Number.parseFloat(percentage*100).toFixed(2)
   }
+
 }
