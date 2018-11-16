@@ -9,6 +9,7 @@ class Game{
     this.rows = 10;
     this.columns = 10;
     this.difficulty = !!data.difficulty ? data.difficulty : "Easy";
+    this.userId = data.user_id;
   }
   createDisplay(){
     this.timeTaken = 0;
@@ -230,7 +231,7 @@ class Game{
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')
-    container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
+    container.innerHTML += `<button data-diif = ${this.difficulty} msdjfifid = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
   }
   renderGame(){
     if(this.winner){
@@ -239,6 +240,42 @@ class Game{
     else{
       return `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Lost</td></tr>`
     }
+  }
+  renderWorldGame(num){
+    const easyContainer = document.getElementById('easy')
+    const mediumContainer = document.getElementById('medium')
+    const hardContainer = document.getElementById('hard')
+    const adapter = new Adapter("http://localhost:3000/api/v1/users");
+    adapter.getOne(this.userId)
+    .then((json)=>{
+
+      let user = json;
+      if(num ===1){
+        if(this.winner){
+          easy.innerHTML += `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Won</td><td>${user.username}</td></tr>`
+        }
+        else{
+          easy.innerHTML += `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Lost</td><td>${user.username}</td></tr>`
+        }
+      }else if(num===2){
+        if(this.winner){
+          medium.innerHTML += `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Won</td><td>${user.username}</td></tr>`
+        }
+        else{
+          medium.innerHTML += `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Lost</td><td>${user.username}</td></tr>`
+        }
+      }
+      else if(num ===3){
+        if(this.winner){
+          hard.innerHTML += `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Won</td><td>${user.username}</td></tr>`
+        }
+        else{
+          hard.innerHTML += `<tr><td>${this.timeTaken}</td><td>${this.difficulty}</td><td>Lost</td><td>${user.username}</td></tr>`
+        }
+      }
+
+    })
+
   }
   styleNumber(clicked,num){
     switch (num){
@@ -293,5 +330,33 @@ class Game{
     let percentage = wonGames/gamesArr.length
     return Number.parseFloat(percentage*100).toFixed(2)
   }
+  static renderWorldGames(gamesArr,num){
+    return gamesArr.map((game)=>{
+      return game.renderWorldGame(num)
+    }).join('')
+  }
+  static WorldGames(gamesArr,caseNum){
+    switch (caseNum){
+      case 1:
+        let easyGames = gamesArr.filter((game)=>{
+          return (game.difficulty==="Easy" && game.winner)
+        })
+        let sortedFiveE = easyGames.sort((gameA,gameB)=>{return gameA.timeTaken - gameB.timeTaken}).slice(0,5)
+        return Game.renderWorldGames(sortedFiveE,1);
+      case 2:
+        let medGames = gamesArr.filter((game)=>{
+          return (game.difficulty==="Medium" && game.winner)
+        })
+        let sortedFiveMed = medGames.sort((gameA,gameB)=>{return gameA.timeTaken - gameB.timeTaken}).slice(0,5)
+        return Game.renderWorldGames(sortedFiveMed,2);
+      case 3:
+        let hardGames = gamesArr.filter((game)=>{
+          return (game.difficulty==="Hard" && game.winner)
+        })
+        let sortedFiveHard = hardGames.sort((gameA,gameB)=>{return gameA.timeTaken - gameB.timeTaken}).slice(0,5)
+        return Game.renderWorldGames(sortedFiveHard,3);
+    }
+  }
+
 
 }

@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     newOrFindUserAdapter.post({username: userInput})
     .then((user) =>{
       currentUser = user
-      document.getElementById('game-container').innerHTML = `<h1>Welcome ${currentUser.username}</h1><button id = "start" name="button">Play new Game!</button>
-      <button id = "stats" name="button">Your Stats</button>`
+      document.getElementById('game-container').innerHTML = `<h1>Welcome ${currentUser.username}</h1><button id = "start">Play new Game!</button>
+      <button id = "stats">Your Stats</button><button id="world-stats">World LeaderBoard</button>`
     })
   })
   const app = new App();

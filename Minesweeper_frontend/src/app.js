@@ -1,6 +1,6 @@
 class App {
   createGame() {
-    let newGame = new Game({})
+    let newGame = new Game({userId:currentUser.id})
     document.getElementById('game-container').addEventListener('mousedown', (event)=>{
       if (event.target.id === "start"){
         newGame.timeTaken = 0;
@@ -35,14 +35,15 @@ class App {
                     </thead>
                   `
                container.innerHTML = fullHTML + fiveGamesString + "</table></div>"
-               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button>`
+               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button><button id="world-stats">World LeaderBoard</button>`
           }
           else{
             container.innerHTML = `<div class="stat">
                                         <h1>Play Some Games!</h1>
                                     </div>
                                     <button id = "start">Play new Game!</button>
-                                    <button id = "reset">Reset Stats</button>`
+                                    <button id = "reset">Reset Stats</button>
+                                    <button id="world-stats">World LeaderBoard</button>`
           }
       })
 
@@ -61,6 +62,52 @@ class App {
                                     <button id = "reset">Reset Stats</button>`
           })
         }
+      }
+      else if(event.target.id === "world-stats"){
+        const container = document.getElementById('game-container')
+        let allGamesArr = []
+        let allGames = new Adapter("http://localhost:3000/api/v1/games")
+        allGames.getAll()
+        .then((json)=>{
+          json.forEach((game)=>{
+            allGamesArr.push(new Game(game))
+          })
+
+
+          let fullHTML = `<div class="stat">
+                <h2>Top 5 Easy Games Stats</h1>
+                  <table>
+                    <thead id="easy">
+                      <th>Time Taken</th>
+                      <th>Difficulty</th>
+                      <th>Won/Lost</th>
+                      <th>Username</th>
+                    </thead>
+                    </table>
+                <h2>Top 5 Medium Games Stats</h1>
+                  <table>
+                    <thead id="medium">
+                      <th>Time Taken</th>
+                      <th>Difficulty</th>
+                      <th>Won/Lost</th>
+                      <th>Username</th>
+                    </thead>
+                    </table>
+                <h2>Top 5 Hard Games Stats</h1>
+                  <table>
+                    <thead id="hard">
+                    <th>Time Taken</th>
+                    <th>Difficulty</th>
+                    <th>Won/Lost</th>
+                    <th>Username</th>
+                    </thead>
+                </table>`
+                container.innerHTML = fullHTML
+                Game.WorldGames(allGamesArr,1)
+                Game.WorldGames(allGamesArr,2)
+                Game.WorldGames(allGamesArr,3)
+                container.innerHTML +=  `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
+        })
       }
     })
   }

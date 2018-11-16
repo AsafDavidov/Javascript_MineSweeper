@@ -95,6 +95,18 @@ body{
   font-size: 15px;
   box-shadow: 1px 1px 1px #999;
 }
+#world-stats{
+  background-color: #693D3D;
+  border: none;
+  color: white;
+  padding-top:12px;
+  padding-bottom:12px;
+  margin-left:20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 15px;
+  box-shadow: 1px 1px 1px #999;
+}
 .stat{
   padding-top: 200px;
 }
