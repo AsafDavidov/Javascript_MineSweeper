@@ -134,4 +134,13 @@ body{
 #space-down{
   padding-top:200px;
 }
-#
+
+#difficulty select {
+  font-family: 'Acme', sans-serif;
+  width: 90px;
+  background-color: rgba(68,36,46,0.9);
+  color: #40e0d0;
+  height: 25px;
+  border: 0;
+  font-size: 16px;
+}
