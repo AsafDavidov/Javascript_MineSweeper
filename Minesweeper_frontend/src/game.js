@@ -121,20 +121,22 @@ class Game{
           window.clearInterval(this.playing)
           this.lost()
       }else{
-        let n;
-        if (this.difficulty==="Easy"){
-          n = 10;
-        }else if (this.difficulty==="Medium"){
-          n = 40;
-        }else if (this.difficulty==="Hard"){
-          n = 70;
+        if(this.bombs.length===0){
+          let n;
+          if (this.difficulty==="Easy"){
+            n = 10;
+          }else if (this.difficulty==="Medium"){
+            n = 40;
+          }else if (this.difficulty==="Hard"){
+            n = 70;
+          }
+          let arr = [];
+          while(arr.length<n){
+            let n = Math.floor(Math.random()*(this.rows*this.columns));
+            if(arr.indexOf(n) === -1 && n!=r+c) arr.push(n);
+          };
+          this.bombs = arr
         }
-        let arr = [];
-        while(arr.length<n){
-          let n = Math.floor(Math.random()*(this.rows*this.columns));
-          if(arr.indexOf(n) === -1 && n!=r+c) arr.push(n);
-        };
-        this.bombs = arr
         adjacentSquares.forEach((num)=>{
           if(this.bombs.includes(num)){
             countAdjacent++
