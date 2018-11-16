@@ -38,18 +38,28 @@ class App {
                container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button>`
           }
           else{
-            container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button>`
+            container.innerHTML = `<div class="stat">
+                                        <h1>Play Some Games!</h1>
+                                    </div>
+                                    <button id = "start">Play new Game!</button>
+                                    <button id = "reset">Reset Stats</button>`
           }
       })
 
       }
       else if(event.target.id === "reset"){
+        const container = document.getElementById('game-container')
         if(confirm("Do you really want to reset your stats?")){
           let delAdapter = new Adapter("http://localhost:3000/api/v1/games")
           delAdapter.destroyGames(currentUser.id)
-          .then(
-            container.innerHTML = `<div class="stat"><h1>Play Some Games!</h1></div><button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id = "reset">Reset Stats</button>`
-          )
+          .then(()=>{
+            container.innerHTML = `<div class="stat">
+                                    <h1>Play Some Games!</h1>
+                                  </div>
+                                    <button id = "start">Play new Game!</button>
+                                    <button id = "stats">Your Stats</button>
+                                    <button id = "reset">Reset Stats</button>`
+          })
         }
       }
     })

@@ -11,23 +11,10 @@ class Game{
     this.difficulty = !!data.difficulty ? data.difficulty : "Easy";
   }
   createDisplay(){
-    //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
     this.timeTaken = 0;
     window.clearInterval(this.playing)
-    let num;
-    if (this.difficulty==="Easy"){
-      num = 10;
-    }else if (this.difficulty==="Medium"){
-      num = 40;
-    }else if (this.difficulty==="Hard"){
-      num = 70;
-    }
-    let arr = [];
-    while(arr.length<num){
-      let num = Math.floor(Math.random()*(this.rows*this.columns));
-      if(arr.indexOf(num) === -1) arr.push(num);
-    };
-    this.bombs = arr
+    //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
+
     const container = document.getElementById('game-container')
     container.innerHTML = '<div id="space-down"></div><h1 id = "intro">Start!</h1>'
     this.createTimer()
@@ -133,6 +120,20 @@ class Game{
           window.clearInterval(this.playing)
           this.lost()
       }else{
+        let n;
+        if (this.difficulty==="Easy"){
+          n = 10;
+        }else if (this.difficulty==="Medium"){
+          n = 40;
+        }else if (this.difficulty==="Hard"){
+          n = 70;
+        }
+        let arr = [];
+        while(arr.length<n){
+          let n = Math.floor(Math.random()*(this.rows*this.columns));
+          if(arr.indexOf(n) === -1 && n!=r+c) arr.push(n);
+        };
+        this.bombs = arr
         adjacentSquares.forEach((num)=>{
           if(this.bombs.includes(num)){
             countAdjacent++
