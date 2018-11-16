@@ -156,3 +156,6 @@ body{
   border: 0;
   font-size: 16px;
 }
+#button-grid{
+  display:inline-block;
+}

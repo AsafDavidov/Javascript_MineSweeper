@@ -215,10 +215,10 @@ class Game{
     const introduction = document.getElementById('intro')
     introduction.innerText = "😎"+ "YOU WIN!" + "😎"
     const container = document.getElementById('game-container')
-    container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
+    container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button style="display:block;" id="world-stats">World LeaderBoard</button>`
   }
   lost(){
-    //should disable all buttons and display all bombs
+
 
     Array.from(document.querySelectorAll(".play-area")).forEach((space)=>{
       let r = parseInt(space.dataset.row)*10;
@@ -233,7 +233,7 @@ class Game{
     const introduction = document.getElementById('intro')
     introduction.innerText = "Game OVER"
     const container = document.getElementById('game-container')
-    container.innerHTML += `<button data-diif = ${this.difficulty} msdjfifid = "start">Play new Game!</button> <button id = "stats">Your Stats</button>`
+    container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "stats">Your Stats</button> <button id="world-stats">World LeaderBoard</button>`
   }
   renderGame(){
     if(this.winner){

@@ -35,7 +35,7 @@ class App {
                     </thead>
                   `
                container.innerHTML = fullHTML + fiveGamesString + "</table></div>"
-               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button><button id="world-stats">World LeaderBoard</button>`
+               container.innerHTML += `<button id = "start">Play new Game!</button> <button id = "reset">Reset Stats</button><br><button id="world-stats">World LeaderBoard</button>`
           }
           else{
             container.innerHTML = `<div class="stat">
