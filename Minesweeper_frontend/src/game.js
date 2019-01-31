@@ -13,9 +13,8 @@ class Game{
   }
   createDisplay(){
     this.timeTaken = 0;
+    this.bombs = [];
     window.clearInterval(this.playing)
-    //ASSIGNMENT OF BOMBS. CAN BE PLACED ANYWHERE. MAYBE GOOD FOR AVOIDING FIRST CLICK LOST
-
     const container = document.getElementById('game-container')
     container.innerHTML = '<div id="space-down"></div><h1 id = "intro">Start!</h1>'
     this.createTimer()
@@ -37,7 +36,7 @@ class Game{
     }
 
     container.innerHTML+=fullHTML;
-    document.getElementById('list').onchange = ()=> {
+    document.getElementById('list').onchange = ()=> {    
       if (document.getElementById('list').value ==="Easy"){
         this.rows = 10;
         this.columns = 10;
